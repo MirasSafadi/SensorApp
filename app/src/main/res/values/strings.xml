@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">Design Patterns Project</string>
+    <string name="error_no_sensor">No sensor data available</string>
+    <string name="label">%1$.2f</string>
+    <string name="label_position">(%1$.3f,%2$.3f)</string>
+    <string name="label_compass">%1$s</string>
+</resources>
