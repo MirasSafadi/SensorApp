@@ -120,4 +120,12 @@
         android:textSize="24sp"
         app:layout_constraintStart_toEndOf="@+id/pressureTV"
         app:layout_constraintTop_toBottomOf="@+id/proximityResTV" />
+
+    <TextView
+        android:id="@+id/errorTV"
+        android:layout_width="373dp"
+        android:layout_height="34dp"
+        android:textSize="24sp"
+        tools:layout_editor_absoluteX="16dp"
+        tools:layout_editor_absoluteY="468dp" />
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -19,6 +19,8 @@ import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Build;
 import android.os.Handler;
+import android.view.View;
+import android.view.ViewGroup;
 import android.widget.*;
 import android.os.Bundle;
 
@@ -35,41 +37,53 @@ import com.example.designpatternsproject.boundary.Control.SensorNotAvailableExce
 import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
-
     private SensorData sensorData;
 
 
     @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        //add log to the bottom of the activity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-        ArrayList<TextView> textViews = new ArrayList<>();
-        /*
-        when passing the text views to the sensorData object, pass them in this order:
-        light -> proximity -> pressure -> compass -> position
-        */
-        textViews.add((TextView) findViewById(R.id.lightResTV));//light
-        textViews.add((TextView) findViewById(R.id.proximityResTV));//proximity
-        textViews.add((TextView) findViewById(R.id.pressureResTV));//pressure
-        textViews.add((TextView) findViewById(R.id.compassResTV));//compass
-        textViews.add((TextView) findViewById(R.id.positionResTV));//position
+        AlertDialog dialog = new AlertDialog.Builder(this)
+                .setTitle("Allow location use")
+                .setMessage("Allow this app to use location services?")
+                .setPositiveButton("Allow", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        //request permission from user
+                        System.out.println("Access Granted!");
+                    }
+                }).setNegativeButton("Deny", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        //throw an exception
+                        System.out.println("Access Denied!");
+                    }
+                }).create();
+        dialog.show();
+        dialog.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(getResources().getColor(android.R.color.holo_green_dark));
         //initialize the sensor data object
-        sensorData = new SensorData(textViews,this);
+        sensorData = new SensorData.Builder().setContext(this).build();
     }
+
     @Override
     protected void onStart() {
         super.onStart();
-        for (AbstractSensor as: sensorData.getSensorList()){
-            if(as != null)
-                (sensorData.getSensorManager()).registerListener(as,as.getSensor(),SensorData.sensorDelay);
+        (sensorData.getSensorManager()).registerListener(sensorData.getCompassSensor(), sensorData.getCompassSensor().getAccelorometerSensor(), SensorData.sensorDelay);
+        (sensorData.getSensorManager()).registerListener(sensorData.getCompassSensor(), sensorData.getCompassSensor().getMagnetometerSensor(), SensorData.sensorDelay);
+        for (AbstractSensor as : sensorData.getSensorList()) {
+            if (as != null)
+                (sensorData.getSensorManager()).registerListener(as, as.getSensor(), SensorData.sensorDelay);
         }
     }
+
     @Override
     protected void onStop() {
         super.onStop();
-        for (AbstractSensor as: sensorData.getSensorList()){
+        (sensorData.getSensorManager()).unregisterListener(sensorData.getCompassSensor());
+        for (AbstractSensor as : sensorData.getSensorList()) {
             (sensorData.getSensorManager()).unregisterListener(as);
         }
     }
