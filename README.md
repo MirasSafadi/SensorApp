@@ -1,4 +1,4 @@
-# SensorApp
+# SensorApp (still in progress)
 This is a simple android app that displays real time data from various sensors such as light, pressure, proximity, position and compass.
 It displays errors if there's a problem reading one of the sensors and tells exactly what sensor is causing trouble.
 things that will be added later:
