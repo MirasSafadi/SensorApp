@@ -69,15 +69,6 @@ public class SensorData implements ActivityCompat.OnRequestPermissionsResultCall
             resTV.setText(e.getMessage());
         }
     }
-    public ArrayList<AbstractSensor> getSensorList(){
-        return sensorList;
-    }
-    public SensorManager getSensorManager() {
-        return sensorManager;
-    }
-    public CompassSensor getCompassSensor(){
-        return compassSensor;
-    }
     public static class Builder{
         private Context context;
 
