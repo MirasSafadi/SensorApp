@@ -40,12 +40,6 @@ public class SensorData implements ActivityCompat.OnRequestPermissionsResultCall
         sensorManager = (SensorManager) context.getSystemService(Context.SENSOR_SERVICE);
         initSensorList(context);
         //move initialization of compass sensor to here.
-        try {
-            resTV = (TextView) thisActivity.findViewById(R.id.compassResTV);
-            compassSensor = CompassSensor.getInstance(resTV,sensorManager,context);
-        } catch (SensorNotAvailableException e) {
-            resTV.setText(e.getMessage());
-        }
     }
     private void initSensorList(Context context){
         TextView resTV = (TextView) thisActivity.findViewById(R.id.errorTV);
