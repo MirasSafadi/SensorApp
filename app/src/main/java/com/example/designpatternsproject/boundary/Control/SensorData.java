@@ -4,6 +4,8 @@ import android.Manifest;
 import android.app.Activity;
 import android.content.Context;
 import android.content.pm.PackageManager;
+import android.graphics.Color;
+import android.graphics.Typeface;
 import android.hardware.SensorManager;
 import android.location.LocationManager;
 import android.os.Build;
@@ -42,31 +44,43 @@ public class SensorData implements ActivityCompat.OnRequestPermissionsResultCall
         //move initialization of compass sensor to here.
     }
     private void initSensorList(Context context){
-        TextView resTV = (TextView) thisActivity.findViewById(R.id.errorTV);
+        TextView resTV;
         try {
             resTV = (TextView) thisActivity.findViewById(R.id.lightResTV);
             sensorList.add(LightSensor.getInstance(resTV,sensorManager,context));
         } catch (SensorNotAvailableException e) {
-            resTV.setText(e.getMessage());
+            resTV = (TextView) thisActivity.findViewById(R.id.lightResTV);
+            resTV.setTextColor(Color.RED);
+            resTV.setTypeface(resTV.getTypeface(), Typeface.BOLD_ITALIC);
+            resTV.setText("Disabled");
         }
         try {
             resTV = (TextView) thisActivity.findViewById(R.id.proximityResTV);
             sensorList.add(ProximitySensor.getInstance(resTV,sensorManager,context));
         } catch (SensorNotAvailableException e) {
-            resTV.setText(e.getMessage());
+            resTV = (TextView) thisActivity.findViewById(R.id.proximityResTV);
+            resTV.setTextColor(Color.RED);
+            resTV.setTypeface(resTV.getTypeface(), Typeface.BOLD_ITALIC);
+            resTV.setText("Disabled");
         }
         try {
             resTV = (TextView) thisActivity.findViewById(R.id.pressureResTV);
             sensorList.add(PressureSensor.getInstance(resTV,sensorManager,context));
         } catch (SensorNotAvailableException e) {
-            resTV.setText(e.getMessage());
+            resTV = (TextView) thisActivity.findViewById(R.id.pressureResTV);
+            resTV.setTextColor(Color.RED);
+            resTV.setTypeface(resTV.getTypeface(), Typeface.BOLD_ITALIC);
+            resTV.setText("Disabled");
         }
         //move initialization to constructor.
         try {
             resTV = (TextView) thisActivity.findViewById(R.id.compassResTV);
             compassSensor = CompassSensor.getInstance(resTV,sensorManager,context);
         } catch (SensorNotAvailableException e) {
-            resTV.setText(e.getMessage());
+            resTV = (TextView) thisActivity.findViewById(R.id.compassResTV);
+            resTV.setTextColor(Color.RED);
+            resTV.setTypeface(resTV.getTypeface(), Typeface.BOLD_ITALIC);
+            resTV.setText("Disabled");
         }
     }
     public static class Builder{

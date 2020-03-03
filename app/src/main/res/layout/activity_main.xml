@@ -121,17 +121,4 @@
         app:layout_constraintStart_toEndOf="@+id/pressureTV"
         app:layout_constraintTop_toBottomOf="@+id/proximityResTV" />
 
-    <TextView
-        android:id="@+id/errorTV"
-        android:layout_width="370dp"
-        android:layout_height="33dp"
-        android:layout_marginStart="21dp"
-        android:layout_marginLeft="21dp"
-        android:layout_marginTop="66dp"
-        android:layout_marginEnd="25dp"
-        android:layout_marginRight="25dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/compassResTV" />
-
 </androidx.constraintlayout.widget.ConstraintLayout>

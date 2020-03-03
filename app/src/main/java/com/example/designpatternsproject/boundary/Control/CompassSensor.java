@@ -16,7 +16,7 @@ public class CompassSensor implements SensorEventListener {
     protected final Context context;
     float[] mGeomagnetic;
     private float[] mGravity;
-    private Double OldDegrees;
+    private double OldDegrees;
     private SensorManager mySensorManager;
     private Sensor compassSensor;
     private Sensor accelerometerSensor;
@@ -45,7 +45,7 @@ public class CompassSensor implements SensorEventListener {
 
     @Override
     public void onSensorChanged(SensorEvent event) {
-        Double DegreeToDisplay = 0.0;
+        Double degreeToDisplay = 0.0;
         switch (event.sensor.getType()){
             case Sensor.TYPE_ACCELEROMETER:
                 mGravity = event.values;
@@ -65,21 +65,22 @@ public class CompassSensor implements SensorEventListener {
 
                     float azimuth = orientation[0];
                     Double rotation = Math.toDegrees(azimuth);
+
                     if (rotation < 0.0f) {
                         rotation += 360.0f;
                     }
-                    DegreeToDisplay=Math.round(rotation * 100.0) / 100.0;
-                    OldDegrees=DegreeToDisplay;
-                    Double SmoothFactorCompass=0.5; // to smooth up the compass sensitivity - still not fully working
-                    if (OldDegrees > DegreeToDisplay) {
-                        OldDegrees = (OldDegrees + SmoothFactorCompass * ((360 + DegreeToDisplay - OldDegrees) % 360) + 360) % 360;
+                    degreeToDisplay=Math.round(rotation * 100.0) / 100.0;
+                    OldDegrees=degreeToDisplay;
+                    double SmoothFactorCompass=0.9; // to smooth up the compass sensitivity - still not fully working
+                    if (OldDegrees > degreeToDisplay) {
+                        OldDegrees = (OldDegrees + SmoothFactorCompass * ((360 + degreeToDisplay - OldDegrees) % 360) + 360) % 360;
                     }
                     else {
-                        OldDegrees = (OldDegrees - SmoothFactorCompass * ((360 - DegreeToDisplay + OldDegrees) % 360) + 360) % 360;
+                        OldDegrees = (OldDegrees - SmoothFactorCompass * ((360 - degreeToDisplay + OldDegrees) % 360) + 360) % 360;
                     }
 
                 }
-                String str = String.format("%.1f\u00B0",DegreeToDisplay);
+                String str = String.format("%.1f\u00B0",degreeToDisplay);
                 resTV.setText(context.getResources().getString(
                         R.string.label_compass, str));
                 break;
@@ -94,12 +95,9 @@ public class CompassSensor implements SensorEventListener {
     public Sensor getMagnetometerSensor(){
         return magnetometerSensor;
     }
-    public Sensor getCompassSensor(){
-        return compassSensor;
-    }
+    public Sensor getCompassSensor(){ return compassSensor; }
     @Override
     public void onAccuracyChanged(Sensor sensor, int accuracy) {
 
     }
-
 }
