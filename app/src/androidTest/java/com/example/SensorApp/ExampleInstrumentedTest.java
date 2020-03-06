@@ -1,4 +1,4 @@
-package com.example.designpatternsproject;
+package com.example.SensorApp;
 
 import android.content.Context;
 

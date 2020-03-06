@@ -1,4 +1,4 @@
-package com.example.designpatternsproject.boundary.Control;
+package com.example.SensorApp.boundary.Control;
 
 import android.Manifest;
 import android.app.Activity;
@@ -10,13 +10,10 @@ import android.hardware.SensorManager;
 import android.location.LocationManager;
 import android.os.Build;
 import android.widget.TextView;
-
 import androidx.annotation.RequiresApi;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
-
-import com.example.designpatternsproject.R;
-
+import com.example.SensorApp.R;
 import java.util.ArrayList;
 /*
 This class is an implementation to the Facade design pattern in order to hide the hideous procedure of

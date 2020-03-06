@@ -1,4 +1,4 @@
-package com.example.designpatternsproject.boundary.Control;
+package com.example.SensorApp.boundary.Control;
 
 import android.content.Context;
 import android.location.Location;
@@ -6,7 +6,7 @@ import android.location.LocationListener;
 import android.os.Bundle;
 import android.widget.TextView;
 
-import com.example.designpatternsproject.R;
+import com.example.SensorApp.R;
 /*
 This class listens for change in current position and updates the display accordingly.
 It implements the LocationListener interface.

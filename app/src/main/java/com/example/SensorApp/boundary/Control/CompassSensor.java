@@ -1,4 +1,4 @@
-package com.example.designpatternsproject.boundary.Control;
+package com.example.SensorApp.boundary.Control;
 
 import android.content.Context;
 import android.hardware.Sensor;
@@ -6,8 +6,7 @@ import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.widget.TextView;
-
-import com.example.designpatternsproject.R;
+import com.example.SensorApp.R;
 /*
 This class is one of the two non-basic sensors because it needs 3 sensor objects to get the data,
 it implements the ServerEventListener interface and acts differently when each sensor is changed.

@@ -1,12 +1,12 @@
-package com.example.designpatternsproject.boundary.Control;
+package com.example.SensorApp.boundary.Control;
 
 import android.content.Context;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorManager;
 import android.widget.TextView;
+import com.example.SensorApp.R;
 
-import com.example.designpatternsproject.R;
 /*This is a subclass of the AbstractSensor class, it is a basic sensor,
 It implements the Singleton design pattern since only one instance is needed
  */

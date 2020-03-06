@@ -1,4 +1,4 @@
-package com.example.designpatternsproject.boundary.Control;
+package com.example.SensorApp.boundary.Control;
 /*
 this class is a custom exception
  */

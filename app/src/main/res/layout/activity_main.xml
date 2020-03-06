@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".boundary.MainActivity">
+    tools:context="com.example.SensorApp.boundary.MainActivity">
 
     <TextView
         android:id="@+id/positionResTV"
