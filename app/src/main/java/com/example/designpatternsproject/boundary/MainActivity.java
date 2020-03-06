@@ -14,19 +14,20 @@ import com.example.designpatternsproject.boundary.Control.AbstractSensor;
 import com.example.designpatternsproject.boundary.Control.SensorData;
 
 public class MainActivity extends AppCompatActivity {
-    private SensorData sensorData;
+    private SensorData sensorData;//the object responsible for fetching and updating the sensor data
 
 
     @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        //add log to the bottom of the activity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         //initialize the sensor data object
         sensorData = new SensorData.Builder().setContext(this).build();
     }
-
+    /*
+    start/stop listening to sensors depending on app state.
+     */
     @Override
     protected void onStart() {
         super.onStart();

@@ -18,33 +18,49 @@ import androidx.core.content.ContextCompat;
 import com.example.designpatternsproject.R;
 
 import java.util.ArrayList;
-
+/*
+This class is an implementation to the Facade design pattern in order to hide the hideous procedure of
+initializing all sensors, requesting permissions to use location services.
+It also implements the Builder Design pattern.
+ */
 public class SensorData implements ActivityCompat.OnRequestPermissionsResultCallback {
-    private static final int MY_PERMISSIONS_REQUEST_ACCESS_LOCATION = 100;
+    /*
+    class attributes include a sensorManager, a locationManger, an array of basic sensors (AbstractSensors),
+    and a compass and location sensors.
+     */
+    private static final int MY_PERMISSIONS_REQUEST_ACCESS_LOCATION = 100;//a const for location permissions
     private ArrayList<AbstractSensor> sensorList;
     private LocationSensor locationSensor;
     private SensorManager sensorManager;
     private LocationManager locationManager;
     private CompassSensor compassSensor;
-    private Context context;
-    private Activity thisActivity;
-    public static final int sensorDelay = SensorManager.SENSOR_DELAY_GAME;
-
+    private Context context;//the context of the app
+    private Activity thisActivity;//the current activity, extracted from context
+    public static final int sensorDelay = SensorManager.SENSOR_DELAY_GAME;//a const for registering sensor listeners
+    /*
+    The constructor is private as part of the Builder design pattern.
+    It initializes all class attributes.
+     */
     @RequiresApi(api = Build.VERSION_CODES.M)
     private SensorData(Builder builder) {
         //initialize all sensors
-        context = builder.context;
-        thisActivity = (Activity) context;
-        TextView resTV = (TextView) thisActivity.findViewById(R.id.positionResTV);
+        context = builder.context;//get the context from the builder
+        thisActivity = (Activity) context;//extract the Activity from the context
         sensorList = new ArrayList<>();
-        locationSensor = LocationSensor.getInstance(resTV, context);
+        //initialize the managers
         locationManager = (LocationManager) context.getSystemService(Context.LOCATION_SERVICE);
         sensorManager = (SensorManager) context.getSystemService(Context.SENSOR_SERVICE);
+        //call the method that initializes all sensors
         initSensorList(context);
-        //move initialization of compass sensor to here.
     }
+    /*
+    This method initializes all sensors, if a SensorNotAvailableException is thrown catch it and
+    update the corresponding textView.
+     */
     private void initSensorList(Context context){
         TextView resTV;
+        resTV = (TextView) thisActivity.findViewById(R.id.positionResTV);
+        locationSensor = LocationSensor.getInstance(resTV, context);
         try {
             resTV = (TextView) thisActivity.findViewById(R.id.lightResTV);
             sensorList.add(LightSensor.getInstance(resTV,sensorManager,context));
@@ -83,6 +99,9 @@ public class SensorData implements ActivityCompat.OnRequestPermissionsResultCall
             resTV.setText("Disabled");
         }
     }
+    /*
+    A static inner class as part of the implementation of the Builder design pattern
+     */
     public static class Builder{
         private Context context;
 
@@ -95,13 +114,17 @@ public class SensorData implements ActivityCompat.OnRequestPermissionsResultCall
             return new SensorData(this);
         }
     }
+    /*
+    This method is called when the user responds to permission request.
+     */
     @Override
     public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults){
+        //use this const to know which permission was given (location, camera, etc_
         if(requestCode == MY_PERMISSIONS_REQUEST_ACCESS_LOCATION) {
                 // If request is cancelled, the result arrays are empty.
                 if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                     if (ContextCompat.checkSelfPermission(context, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
-                        //Request location updates:
+                        //Request location updates from location manager:
                         locationManager
                                 .requestLocationUpdates(LocationManager.GPS_PROVIDER, 5000, 10, locationSensor);
                     }
@@ -109,33 +132,48 @@ public class SensorData implements ActivityCompat.OnRequestPermissionsResultCall
                     // permission denied, boo! Disable the
                     // functionality that depends on this permission.
                     locationManager.removeUpdates(locationSensor);
+                    //display Disabled on position textView
+                    TextView resTV = (TextView) thisActivity.findViewById(R.id.positionResTV);
+                    resTV.setTextColor(Color.RED);
+                    resTV.setTypeface(resTV.getTypeface(), Typeface.BOLD_ITALIC);
+                    resTV.setText("Disabled");
                 }
         }
 
     }
+    /*
+    This method checks if location permission are already granted or not.
+     */
     public void checkLocationPermission() {
         if (ContextCompat.checkSelfPermission(context, Manifest.permission.ACCESS_FINE_LOCATION)
                 != PackageManager.PERMISSION_GRANTED) {
+            //permission not granted
+            //request it.
             ActivityCompat
                     .requestPermissions(thisActivity, new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
                             MY_PERMISSIONS_REQUEST_ACCESS_LOCATION);
         } else {
-            if (ContextCompat.checkSelfPermission(context, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
-                //Request location updates:
+            //if (ContextCompat.checkSelfPermission(context, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED)
+                //Request location updates from location manager:
                 locationManager
                         .requestLocationUpdates(LocationManager.GPS_PROVIDER, 5000, 10, locationSensor);
-            }
         }
     }
+    /*
+    this method registers all sensors to the sensor manager so the listening can begin
+     */
     public void startListeningToSensors(){
-        sensorManager.registerListener(compassSensor, compassSensor.getAccelerometerSensor(), SensorData.sensorDelay);
-        sensorManager.registerListener(compassSensor, compassSensor.getMagnetometerSensor(), SensorData.sensorDelay);
-        sensorManager.registerListener(compassSensor, compassSensor.getCompassSensor(), SensorData.sensorDelay);
+        sensorManager.registerListener(compassSensor, compassSensor.getAccelerometerSensor(), sensorDelay);
+        sensorManager.registerListener(compassSensor, compassSensor.getMagnetometerSensor(), sensorDelay);
+        sensorManager.registerListener(compassSensor, compassSensor.getCompassSensor(), sensorDelay);
         for (AbstractSensor as : sensorList) {
             if (as != null)
                 sensorManager.registerListener(as, as.getSensor(), sensorDelay);
         }
     }
+    /*
+    unregister all sensors
+     */
     public void stopListeningToSensors(){
         locationManager.removeUpdates(locationSensor);
         sensorManager.unregisterListener(compassSensor);
