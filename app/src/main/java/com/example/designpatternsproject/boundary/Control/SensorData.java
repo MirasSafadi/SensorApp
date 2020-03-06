@@ -51,13 +51,13 @@ public class SensorData implements ActivityCompat.OnRequestPermissionsResultCall
         locationManager = (LocationManager) context.getSystemService(Context.LOCATION_SERVICE);
         sensorManager = (SensorManager) context.getSystemService(Context.SENSOR_SERVICE);
         //call the method that initializes all sensors
-        initSensorList(context);
+        initSensorList();
     }
     /*
     This method initializes all sensors, if a SensorNotAvailableException is thrown catch it and
     update the corresponding textView.
      */
-    private void initSensorList(Context context){
+    private void initSensorList(){
         TextView resTV;
         resTV = (TextView) thisActivity.findViewById(R.id.positionResTV);
         locationSensor = LocationSensor.getInstance(resTV, context);

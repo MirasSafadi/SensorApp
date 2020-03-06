@@ -19,9 +19,9 @@ public class CompassSensor implements SensorEventListener {
     It needs more attributes than the basic sensors
      */
     private static CompassSensor singleton = null;//the single instance
-    protected TextView resTV;//the TextView that displays the data
-    protected final Context context;//the context of the application.
-    float[] mGeomagnetic;//a float array that is updated as the accelerometer sensor is updated
+    private TextView resTV;//the TextView that displays the data
+    private final Context context;//the context of the application.
+    private float[] mGeomagnetic;//a float array that is updated as the accelerometer sensor is updated
     private float[] mGravity;//a float array that is updated as the magnetometer sensor is updated
     private double OldDegrees;//a variable to save the old degrees to north.
     private SensorManager mySensorManager;//a SensorManager object that manages the 3 sensors
